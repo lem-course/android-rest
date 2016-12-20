@@ -9,7 +9,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,9 +69,21 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Boo
     @Override
     public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
         final List<Book> hits = response.body();
-        Log.i(TAG, "Hits: " + hits.size());
-        adapter.clear();
-        adapter.addAll(hits);
+
+        if (response.isSuccessful()) {
+            Log.i(TAG, "Hits: " + hits.size());
+            adapter.clear();
+            adapter.addAll(hits);
+        } else {
+            String errorMessage;
+            try {
+                errorMessage = "An error occurred: " + response.errorBody().string();
+            } catch (IOException e) {
+                errorMessage = "An error occurred: error while decoding the error message.";
+            }
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+            Log.e(TAG, errorMessage);
+        }
         container.setRefreshing(false);
     }
 

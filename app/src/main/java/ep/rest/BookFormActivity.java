@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.io.IOException;
+
 import okhttp3.Headers;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -67,20 +69,29 @@ public class BookFormActivity extends AppCompatActivity
     public void onResponse(Call<Void> call, Response<Void> response) {
         final Headers headers = response.headers();
 
-        final int id;
-        if (book == null) {
-            Log.i(TAG, "Insertion completed.");
-            // Preberemo iz Location v zaglavju
-            final String[] parts = headers.get("Location").split("/");
-            id = Integer.parseInt(parts[parts.length - 1]);
+        if (response.isSuccessful()) {
+            final int id;
+            if (book == null) {
+                Log.i(TAG, "Insertion completed.");
+                // Preberemo Location iz zaglavja
+                final String[] parts = headers.get("Location").split("/");
+                id = Integer.parseInt(parts[parts.length - 1]);
+            } else {
+                Log.i(TAG, "Editing saved.");
+                id = book.id;
+            }
+            final Intent intent = new Intent(this, BookDetailActivity.class);
+            intent.putExtra("ep.rest.id", id);
+            startActivity(intent);
         } else {
-            Log.i(TAG, "Editing saved.");
-            id = book.id;
+            String errorMessage;
+            try {
+                errorMessage = "An error occurred: " + response.errorBody().string();
+            } catch (IOException e) {
+                errorMessage = "An error occurred: error while decoding the error message.";
+            }
+            Log.e(TAG, errorMessage);
         }
-
-        final Intent intent = new Intent(this, BookDetailActivity.class);
-        intent.putExtra("ep.rest.id", id);
-        startActivity(intent);
     }
 
     @Override
