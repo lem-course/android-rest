@@ -1,10 +1,11 @@
 package ep.rest;
 
+import java.io.Serializable;
 import java.util.Locale;
 
-public class Book {
+public class Book implements Serializable {
     public int id, year;
-    public String author, title, uri;
+    public String author, title, uri, description;
     public double price;
 
     @Override

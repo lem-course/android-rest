@@ -1,11 +1,13 @@
 package ep.rest;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -14,20 +16,12 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements Callback<List<Book>> {
     private static final String TAG = MainActivity.class.getCanonicalName();
 
-    private final Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://10.10.10.221/netbeans/mvc-rest/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-
-    private final BookAPI service = retrofit.create(BookAPI.class);
-
     private SwipeRefreshLayout container;
+    private Button button;
     private ListView list;
     private final List<Book> books = new ArrayList<>();
     private BookAdapter adapter;
@@ -44,7 +38,9 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Boo
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.i(TAG, "clicked on: " + books.get(i));
+                final Intent intent = new Intent(MainActivity.this, BookDetailActivity.class);
+                intent.putExtra("ep.rest.id", books.get(i).id);
+                startActivity(intent);
             }
         });
 
@@ -52,11 +48,20 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Boo
         container.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                service.getAll().enqueue(MainActivity.this);
+                BookService.getInstance().getAll().enqueue(MainActivity.this);
             }
         });
 
-        service.getAll().enqueue(MainActivity.this);
+        button = (Button) findViewById(R.id.add_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Intent intent = new Intent(MainActivity.this, BookFormActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        BookService.getInstance().getAll().enqueue(MainActivity.this);
     }
 
     @Override
