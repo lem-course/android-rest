@@ -12,7 +12,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -25,7 +24,6 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Boo
     private SwipeRefreshLayout container;
     private Button button;
     private ListView list;
-    private final List<Book> books = new ArrayList<>();
     private BookAdapter adapter;
 
     @Override
@@ -35,14 +33,17 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Boo
 
         list = (ListView) findViewById(R.id.items);
 
-        adapter = new BookAdapter(this, books);
+        adapter = new BookAdapter(this);
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                final Intent intent = new Intent(MainActivity.this, BookDetailActivity.class);
-                intent.putExtra("ep.rest.id", books.get(i).id);
-                startActivity(intent);
+                final Book book = adapter.getItem(i);
+                if (book != null) {
+                    final Intent intent = new Intent(MainActivity.this, BookDetailActivity.class);
+                    intent.putExtra("ep.rest.id", book.id);
+                    startActivity(intent);
+                }
             }
         });
 

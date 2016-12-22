@@ -8,12 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class BookAdapter extends ArrayAdapter<Book> {
-    public BookAdapter(Context context, List<Book> objects) {
-        super(context, 0, objects);
+    public BookAdapter(Context context) {
+        super(context, 0, new ArrayList<Book>());
     }
 
     @Override
