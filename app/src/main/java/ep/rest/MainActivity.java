@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Boo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        list = (ListView) findViewById(R.id.items);
+        list = findViewById(R.id.items);
 
         adapter = new BookAdapter(this);
         list.setAdapter(adapter);
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Boo
             }
         });
 
-        container = (SwipeRefreshLayout) findViewById(R.id.container);
+        container = findViewById(R.id.container);
         container.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Boo
             }
         });
 
-        button = (Button) findViewById(R.id.add_button);
+        button = findViewById(R.id.add_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

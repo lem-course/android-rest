@@ -29,12 +29,12 @@ public class BookFormActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_form);
 
-        author = (EditText) findViewById(R.id.etAuthor);
-        title = (EditText) findViewById(R.id.etTitle);
-        price = (EditText) findViewById(R.id.etPrice);
-        year = (EditText) findViewById(R.id.etYear);
-        description = (EditText) findViewById(R.id.etDescription);
-        button = (Button) findViewById(R.id.button);
+        author = findViewById(R.id.etAuthor);
+        title = findViewById(R.id.etTitle);
+        price = findViewById(R.id.etPrice);
+        year = findViewById(R.id.etYear);
+        description = findViewById(R.id.etDescription);
+        button = findViewById(R.id.button);
         button.setOnClickListener(this);
 
         final Intent intent = getIntent();

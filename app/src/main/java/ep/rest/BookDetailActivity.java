@@ -31,14 +31,14 @@ public class BookDetailActivity extends AppCompatActivity implements Callback<Bo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_detail);
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+        toolbarLayout = findViewById(R.id.toolbar_layout);
 
-        tvBookDetail = (TextView) findViewById(R.id.tv_book_detail);
+        tvBookDetail = findViewById(R.id.tv_book_detail);
 
-        fabEdit = (FloatingActionButton) findViewById(R.id.fab_edit);
+        fabEdit = findViewById(R.id.fab_edit);
         fabEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,7 +47,7 @@ public class BookDetailActivity extends AppCompatActivity implements Callback<Bo
                 startActivity(intent);
             }
         });
-        fabDelete = (FloatingActionButton) findViewById(R.id.fab_delete);
+        fabDelete = findViewById(R.id.fab_delete);
         fabDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

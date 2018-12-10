@@ -25,9 +25,9 @@ public class BookAdapter extends ArrayAdapter<Book> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.booklist_element, parent, false);
         }
 
-        final TextView tvTitle = (TextView) convertView.findViewById(R.id.tv_title);
-        final TextView tvAuthor = (TextView) convertView.findViewById(R.id.tv_author);
-        final TextView tvPrice = (TextView) convertView.findViewById(R.id.tv_price);
+        final TextView tvTitle = convertView.findViewById(R.id.tv_title);
+        final TextView tvAuthor = convertView.findViewById(R.id.tv_author);
+        final TextView tvPrice = convertView.findViewById(R.id.tv_price);
 
         tvTitle.setText(book.title);
         tvAuthor.setText(book.author);
