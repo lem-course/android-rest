@@ -59,7 +59,7 @@ class BookDetailActivity : AppCompatActivity(), Callback<Book> {
             toolbarLayout.title = book?.title
         } else {
             val errorMessage = try {
-                "An error occurred: ${response.errorBody().string()}"
+                "An error occurred: ${response.errorBody()?.string()}"
             } catch (e: IOException) {
                 "An error occurred: error while decoding the error message."
             }

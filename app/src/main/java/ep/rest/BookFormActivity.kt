@@ -52,9 +52,9 @@ class BookFormActivity : AppCompatActivity(), Callback<Void> {
             val id = if (book == null) {
                 // Preberemo Location iz zaglavja
                 Log.i(TAG, "Insertion completed.")
-                val parts = headers.get("Location").split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                val parts = headers.get("Location")?.split("/".toRegex())?.dropLastWhile { it.isEmpty() }?.toTypedArray()
                 // spremenljivka id dobi vrednost, ki jo vrne zadnji izraz v bloku
-                parts[parts.size - 1].toInt()
+                parts?.get(parts.size - 1)?.toInt()
             } else {
                 Log.i(TAG, "Editing saved.")
                 // spremenljivka id dobi vrednost, ki jo vrne zadnji izraz v bloku
@@ -66,7 +66,7 @@ class BookFormActivity : AppCompatActivity(), Callback<Void> {
             startActivity(intent)
         } else {
             val errorMessage = try {
-                "An error occurred: ${response.errorBody().string()}"
+                "An error occurred: ${response.errorBody()?.string()}"
             } catch (e: IOException) {
                 "An error occurred: error while decoding the error message."
             }

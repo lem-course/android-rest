@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(), Callback<List<Book>> {
     }
 
     override fun onResponse(call: Call<List<Book>>, response: Response<List<Book>>) {
-        val hits = response.body()
+        val hits = response.body() ?: emptyList()
 
         if (response.isSuccessful) {
             Log.i(TAG, "Hits: " + hits.size)
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity(), Callback<List<Book>> {
             adapter?.addAll(hits)
         } else {
             val errorMessage = try {
-                "An error occurred: ${response.errorBody().string()}"
+                "An error occurred: ${response.errorBody()?.string()}"
             } catch (e: IOException) {
                 "An error occurred: error while decoding the error message."
             }
