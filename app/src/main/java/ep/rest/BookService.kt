@@ -10,7 +10,10 @@ object BookService {
     interface RestApi {
 
         companion object {
-            const val URL = "http://10.0.2.2:8080/netbeans/mvc-rest/api/"
+            // AVD emulator
+            // const val URL = "http://10.0.2.2:8080/netbeans/mvc-rest/api/"
+            // Genymotion
+            const val URL = "http://10.0.3.2:8080/netbeans/mvc-rest/api/"
         }
 
         @GET("books")
