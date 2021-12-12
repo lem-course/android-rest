@@ -2,9 +2,9 @@ package ep.rest
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
-import kotlinx.android.synthetic.main.activity_book_form.*
+import androidx.appcompat.app.AppCompatActivity
+import ep.rest.databinding.ActivityBookFormBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -14,33 +14,41 @@ class BookFormActivity : AppCompatActivity(), Callback<Void> {
 
     private var book: Book? = null
 
+    private val binding by lazy {
+        ActivityBookFormBinding.inflate(layoutInflater)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_book_form)
+        setContentView(binding.root)
 
-        btnSave.setOnClickListener {
-            val author = etAuthor.text.toString().trim()
-            val title = etTitle.text.toString().trim()
-            val description = etDescription.text.toString().trim()
-            val price = etPrice.text.toString().trim().toDouble()
-            val year = etYear.text.toString().trim().toInt()
+        binding.btnSave.setOnClickListener {
+            val author = binding.etAuthor.text.toString().trim()
+            val title = binding.etTitle.text.toString().trim()
+            val description = binding.etDescription.text.toString().trim()
+            val price = binding.etPrice.text.toString().trim().toDouble()
+            val year = binding.etYear.text.toString().trim().toInt()
 
             if (book == null) { // dodajanje
-                BookService.instance.insert(author, title, price,
-                        year, description).enqueue(this)
+                BookService.instance.insert(
+                    author, title, price,
+                    year, description
+                ).enqueue(this)
             } else { // urejanje
-                BookService.instance.update(book!!.id, author, title, price,
-                        year, description).enqueue(this)
+                BookService.instance.update(
+                    book!!.id, author, title, price,
+                    year, description
+                ).enqueue(this)
             }
         }
 
         val book = intent?.getSerializableExtra("ep.rest.book") as Book?
         if (book != null) {
-            etAuthor.setText(book.author)
-            etTitle.setText(book.title)
-            etPrice.setText(book.price.toString())
-            etYear.setText(book.year.toString())
-            etDescription.setText(book.description)
+            binding.etAuthor.setText(book.author)
+            binding.etTitle.setText(book.title)
+            binding.etPrice.setText(book.price.toString())
+            binding.etYear.setText(book.year.toString())
+            binding.etDescription.setText(book.description)
             this.book = book
         }
     }
@@ -52,7 +60,9 @@ class BookFormActivity : AppCompatActivity(), Callback<Void> {
             val id = if (book == null) {
                 // Preberemo Location iz zaglavja
                 Log.i(TAG, "Insertion completed.")
-                val parts = headers.get("Location")?.split("/".toRegex())?.dropLastWhile { it.isEmpty() }?.toTypedArray()
+                val parts =
+                    headers.get("Location")?.split("/".toRegex())?.dropLastWhile { it.isEmpty() }
+                        ?.toTypedArray()
                 // spremenljivka id dobi vrednost, ki jo vrne zadnji izraz v bloku
                 parts?.get(parts.size - 1)?.toInt()
             } else {

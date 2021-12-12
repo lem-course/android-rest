@@ -21,7 +21,6 @@ class BookAdapter(context: Context) : ArrayAdapter<Book>(context, 0, ArrayList()
         val tvAuthor = view.findViewById<TextView>(R.id.tvAuthor)
         val tvPrice = view.findViewById<TextView>(R.id.tvPrice)
 
-
         val book = getItem(position)
 
         tvTitle.text = book?.title

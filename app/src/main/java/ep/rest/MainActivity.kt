@@ -6,7 +6,7 @@ import android.util.Log
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import ep.rest.databinding.ActivityMainBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -15,15 +15,15 @@ import java.io.IOException
 class MainActivity : AppCompatActivity(), Callback<List<Book>> {
     private val tag = this::class.java.canonicalName
 
-    private lateinit var adapter: BookAdapter
+    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    private val adapter by lazy { BookAdapter(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
 
-        adapter = BookAdapter(this)
-        items.adapter = adapter
-        items.onItemClickListener = AdapterView.OnItemClickListener { _, _, i, _ ->
+        binding.items.adapter = adapter
+        binding.items.onItemClickListener = AdapterView.OnItemClickListener { _, _, i, _ ->
             val book = adapter.getItem(i)
             if (book != null) {
                 val intent = Intent(this, BookDetailActivity::class.java)
@@ -32,9 +32,9 @@ class MainActivity : AppCompatActivity(), Callback<List<Book>> {
             }
         }
 
-        container.setOnRefreshListener { BookService.instance.getAll().enqueue(this) }
+        binding.container.setOnRefreshListener { BookService.instance.getAll().enqueue(this) }
 
-        btnSave.setOnClickListener {
+        binding.btnSave.setOnClickListener {
             val intent = Intent(this, BookFormActivity::class.java)
             startActivity(intent)
         }
@@ -58,11 +58,11 @@ class MainActivity : AppCompatActivity(), Callback<List<Book>> {
             Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
             Log.e(tag, errorMessage)
         }
-        container.isRefreshing = false
+        binding.container.isRefreshing = false
     }
 
     override fun onFailure(call: Call<List<Book>>, t: Throwable) {
         Log.w(tag, "Error: ${t.message}", t)
-        container.isRefreshing = false
+        binding.container.isRefreshing = false
     }
 }

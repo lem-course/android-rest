@@ -5,8 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_book_detail.*
-import kotlinx.android.synthetic.main.content_book_detail.*
+import ep.rest.databinding.ActivityBookDetailBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -14,19 +13,22 @@ import java.io.IOException
 
 class BookDetailActivity : AppCompatActivity() {
     private var book: Book = Book()
+    val binding by lazy {
+        ActivityBookDetailBinding.inflate(layoutInflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_book_detail)
-        setSupportActionBar(toolbar)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
 
-        fabEdit.setOnClickListener {
+        binding.fabEdit.setOnClickListener {
             val intent = Intent(this, BookFormActivity::class.java)
             intent.putExtra("ep.rest.book", book)
             startActivity(intent)
         }
 
-        fabDelete.setOnClickListener {
+        binding.fabDelete.setOnClickListener {
             val dialog = AlertDialog.Builder(this)
             dialog.setTitle("Confirm deletion")
             dialog.setMessage("Are you sure?")
@@ -56,8 +58,8 @@ class BookDetailActivity : AppCompatActivity() {
             Log.i(tag, "Got result: ${activity.book}")
 
             if (response.isSuccessful) {
-                activity.tvBookDetail.text = activity.book.description
-                activity.toolbarLayout.title = activity.book.title
+                activity.binding.includer.tvBookDetail.text = activity.book.description
+                activity.binding.toolbarLayout.title = activity.book.title
             } else {
                 val errorMessage = try {
                     "An error occurred: ${response.errorBody()?.string()}"
@@ -66,7 +68,7 @@ class BookDetailActivity : AppCompatActivity() {
                 }
 
                 Log.e(tag, errorMessage)
-                activity.tvBookDetail.text = errorMessage
+                activity.binding.includer.tvBookDetail.text = errorMessage
             }
         }
 
