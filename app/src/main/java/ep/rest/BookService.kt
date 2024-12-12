@@ -11,9 +11,8 @@ object BookService {
 
         companion object {
             // AVD emulator
-            // const val URL = "http://10.0.2.2:8080/netbeans/mvc-rest/api/"
-            // Genymotion
-            const val URL = "http://10.0.3.2:8080/netbeans/mvc-rest/api/"
+            // Potrebno je še nastaviti posredovanje števil vrat
+            const val URL = "http://10.0.2.2:8080/netbeans/mvc-rest/api/"
         }
 
         @GET("books")
