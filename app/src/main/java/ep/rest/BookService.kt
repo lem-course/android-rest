@@ -18,6 +18,9 @@ object BookService {
         @GET("books")
         fun getAll(): Call<List<Book>>
 
+        @DELETE("books/{id}")
+        fun delete(@Path("id") id: Int): Call<Void>
+
         @GET("books/{id}")
         fun get(@Path("id") id: Int): Call<Book>
 
